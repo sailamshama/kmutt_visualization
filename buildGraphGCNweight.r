@@ -1,14 +1,17 @@
 ## -------- START --------
-
+#######################################################
 #inputFile = GCN network file having one and two column is gene pair and third column is weight, without header
-networkInput <- as.matrix(read.csv("D:\\GNFS_modi\\CoExpress\\WGCNA_file\\VIS\\NewGeneSet\\322.txt", header= F, sep = "\t"))     ##Set path    
+#specify GCN tsv file
+networkInput <- as.matrix(read.csv("/Users/saila/Desktop/Visualization_material/GCN_353/192.tsv", header= F, sep = "\t"))     ##Set path
+#REMOVE HEADER
 netInCol1  <- as.matrix(paste(":", networkInput[,1],":", sep=""))
 netInCol2  <- as.matrix(paste(":", networkInput[,2],":", sep=""))
 netWeight <- as.data.frame(cbind(netInCol1, netInCol2, networkInput[,3]))
 
-
+#######################################################
 #Significant genes of each gene-set record of each dataset = all genes member of each gene-set record are significant gene
-inputSigList <- scan("D:\\GNFS_modi\\CoExpress\\WGCNA_file\\VIS\\NewGeneSet\\All_sig_gene_10072.txt", what="", sep="\n")	##Set path
+#no need to update path
+inputSigList <- scan("/Users/saila/Desktop/Visualization_material/All_sig_gene_10072.txt", what="", sep="\n")	##Set path
 #Separate elements by one or more whitepace
 myList <- strsplit(inputSigList, "[[:space:]]+")
 #Extract the first vector element and set it as the list element name
@@ -18,7 +21,10 @@ myList <- lapply(myList, `[`, -1)
 
 
 ###TO SPECIFY which gene-set will be used to draw a correlation graph
-drawList <- 322
+
+#######################################################
+#must be same as file chosen in first path
+drawList <- 192
 myL <- myList[]
 nameGS<-names(myL)
 matName <- charmatch(drawList, nameGS)
@@ -27,6 +33,7 @@ if(!is.na(matName)){
 	mlm<-as.matrix(ml)
 }          
 sigG    <- as.matrix(paste(":", mlm[,1],":", sep=""))
+#######################################################
 
 ##To specify the type of relationship of each gene-pair
 FindExp <- function(sigG, netWeight,...){
@@ -59,9 +66,25 @@ geneMatchSub <- NULL
 fg<-FindExp(sigG, netWeight)
 fg <- as.matrix(fg)
 fgc <-gsub(":", "", fg)
-write.table(fgc, file = paste("D:\\GNFS_modi\\CoExpress\\WGCNA_file\\VIS\\NewGeneSet\\", drawList, "_sig-non.txt", sep =""), 
+#create new file containing lean_data
+## maybe create new directory
+#mainDir <- "/Users/saila/Desktop/Visualization_material/lean_data/"
+#subDir <- "64"
+#dir.create(file.path(mainDir, subDir))
+# https://stackoverflow.com/questions/4216753/check-existence-of-directory-and-create-if-doesnt-exist
+mainDir <- "/Users/saila/Desktop/Visualization_material/lean_data/"
+subDir <- drawList
+dir.create(file.path(mainDir, subDir))
+write.table(fgc, file = paste("/Users/saila/Desktop/Visualization_material/lean_data/", drawList, "/", drawList, "_sig-non.txt", sep =""),
 	row.names = F, col.names = c("Gene1", "Gene2", "Weight", "Significant"), sep ="\t")
 
+#######################################################
+
+##### MUST DO WORK HERE #####
+## SORT WEIGHT COLUMN ##
+## ADD RANK COLUMN ##
+##name rank column as "No"
+#######################################################
 
 ###Manually add "No" column to specify the order of gene-pair based on weight that ascending sort
 
@@ -75,13 +98,16 @@ install.packages("ggplot2")
 library(ggplot2)
 
 ##Read file to draw network
-myGraph <- read.table("D:\\GNFS_modi\\CoExpress\\WGCNA_file\\VIS\\NewGeneSet\\192\\192_sig-non.txt", header = T)	##Set path
+myGraph <- read.table("/Users/saila/Desktop/Visualization_material/lean_data/192/192_sig-non.txt", header = T)	##Set path
 ##To count the number of each group (frequency table)
 table(myGraph$Significant)
 
 
-
-##Graph with title which name depend on the input =========================================================================================
+############ GET gene set name corresponding to gene set number ###############
+##Graph with title which name depend on the input
+#you may add pathname from NewPathwayAPI_withName.txt
+#######################################################
+=========================================================================================
 
 qplot(No, Weight, colour = Significant, data = myGraph, 
 	main=" Dissimilarity between gene pair of GCN of MAPK signaling pathway", xlab="Gene-pair", ylab="Weight")
@@ -116,19 +142,19 @@ qplot(No, Weight, colour = Significant, data = myGraph,
 
 ## Plot the graph based on category according to Sig-sig, Sig-non, non-non group(128_sig-non.txt should be ordered by Significant column)
 #Pattern I
-myGraph <- read.table("D:\\GNFS_modi\\CoExpress\\WGCNA_file\\VIS\\NewGeneSet\\128\\128_sig-non.txt", header = T)
+myGraph <- read.table("/Users/saila/Desktop/Visualization_material/lean_data/192/192_sig-non.txt", header = T)
 qplot(Significant, Weight, colour = Significant, data = myGraph, 
 	main=" Dissimilarity between gene pair of GCN of Prostate cancer pathway", xlab="Gene-pair", ylab="Weight")  
 
 #Pattern II
-myGraph <- read.table("D:\\GNFS_modi\\CoExpress\\WGCNA_file\\VIS\\NewGeneSet\\128\\128_sig-non.txt", header = T)
+myGraph <- read.table("/Users/saila/Desktop/Visualization_material/lean_data/192/192_sig-non.txt", header = T)
 p <- qplot(Significant, Weight, colour = Significant, data = myGraph, 
 	 xlab="Gene-pair", ylab="Weight")  
 p+theme(axis.title=element_text(face="bold", size="10", color="black"), legend.position="top")
 
 
 
-
+### formatting graph ###
 
 ## Plot the graph based on order of the gene-pair by weights (128_sig-non.txt should be ordered by weight (No column))
 #Pattern I
@@ -152,13 +178,14 @@ p <- qplot(No, Weight, colour = Significant, data = myGraph,
 p+theme(axis.title=element_text(face="bold", size="10", color="black"), legend.position="bottom")
 	
 
-	
+################################################################
 	
 myGraph <- read.table("D:\\GNFS_modi\\CoExpress\\WGCNA_file\\VIS\\NewGeneSet\\210\\210_sig-non.txt", header = T)
 p <- qplot(Significant, Weight, colour = Significant, data = myGraph, 
 	main=" Dissimilarity between gene pair of GCN of Apoptosis signaling", xlab="Gene-pair", ylab="Weight") 
 p+theme(legend.text=element_text(size=12))
-	
+
+################################################################
 	
 	
 	
