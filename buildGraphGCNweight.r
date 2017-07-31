@@ -2,7 +2,9 @@
 #######################################################
 #inputFile = GCN network file having one and two column is gene pair and third column is weight, without header
 #specify GCN tsv file
-networkInput <- as.matrix(read.csv("/Users/saila/Desktop/Visualization_material/GCN_353/192.tsv", header= F, sep = "\t"))     ##Set path
+#create loop here for all tsv files for (i in 0:397) {}
+i = 0
+networkInput <- as.matrix(read.csv(paste("/Users/saila/Desktop/Visualization_material/GCN_353/", i,".tsv", sep=""), header= F, sep = "\t"))     ##Set path
 #REMOVE HEADER
 netInCol1  <- as.matrix(paste(":", networkInput[,1],":", sep=""))
 netInCol2  <- as.matrix(paste(":", networkInput[,2],":", sep=""))
@@ -24,7 +26,7 @@ myList <- lapply(myList, `[`, -1)
 
 #######################################################
 #must be same as file chosen in first path
-drawList <- 192
+drawList <- i
 myL <- myList[]
 nameGS<-names(myL)
 matName <- charmatch(drawList, nameGS)
@@ -39,24 +41,24 @@ sigG    <- as.matrix(paste(":", mlm[,1],":", sep=""))
 FindExp <- function(sigG, netWeight,...){
 geneMatch <- NULL
 geneMatchSub <- NULL	
-	for (i in 1:nrow(netWeight)){	
-    match1 <- charmatch(netWeight[i,1], sigG[,1])
+	for (j in 1:nrow(netWeight)){	
+    match1 <- charmatch(netWeight[j,1], sigG[,1])
 		if(!is.na(match1)){				
-			match2 <- charmatch(netWeight[i,2], sigG[,1])	
+			match2 <- charmatch(netWeight[j,2], sigG[,1])	
 			if(!is.na(match2)){
-				a<-cbind(netWeight[i,],significant ="Sig-sig")
+				a<-cbind(netWeight[j,],significant ="Sig-sig")
 				geneMatchSub <- rbind(geneMatchSub, a)				
 			}else{
-				a<-cbind(netWeight[i,],significant ="Sig-non")
+				a<-cbind(netWeight[j,],significant ="Sig-non")
 				geneMatchSub <- rbind(geneMatchSub, a)	
 			}			
 		}else{
-			match2 <- charmatch(netWeight[i,2], sigG[,1])
+			match2 <- charmatch(netWeight[j,2], sigG[,1])
 			if(!is.na(match2)){
-				a<-cbind(netWeight[i,],significant ="Sig-non")  #Should label "Non-sig" but it is categorized into same group as "Sig-non" 
+				a<-cbind(netWeight[j,],significant ="Sig-non")  #Should label "Non-sig" but it is categorized into same group as "Sig-non" 
 				geneMatchSub <- rbind(geneMatchSub, a)				
 			}else{
-				a<-cbind(netWeight[i,],significant ="Non-non")
+				a<-cbind(netWeight[j,],significant ="Non-non")
 				geneMatchSub <- rbind(geneMatchSub, a)	
 			}
 		}				
@@ -81,9 +83,26 @@ write.table(fgc, file = paste("/Users/saila/Desktop/Visualization_material/lean_
 #######################################################
 
 ##### MUST DO WORK HERE #####
+filename <- paste("/Users/saila/Desktop/Visualization_material/lean_data/",drawList,"/",drawList,"_sig-non.txt", sep="")
+gene_pair_file <- as.matrix(read.csv(filename, sep="\t"))
+
 ## SORT WEIGHT COLUMN ##
-## ADD RANK COLUMN ##
+weight_column <- gene_pair_file[, "Weight"]
+sorted_weight_column <- sort(weight_column)
+gene_pair_file[, "Weight"] <- sorted_weight_column
+
+## ADD "RANK" COLUMN ##
+new_column <- seq(1, nrow(gene_pair_file))
+
+gene_pair_file_chunk1 <- gene_pair_file[, 1:2]
+gene_pair_file_chunk2 <- gene_pair_file[, 3:4]
+
+new_gene_pair_file <- cbind(gene_pair_file_chunk1, new_column, gene_pair_file_chunk2)
 ##name rank column as "No"
+colnames(new_gene_pair_file) <- c("Gene1",	"Gene2","No",	"Weight",	"Significant")
+
+write.table(new_gene_pair_file, filename, sep="\t")
+
 #######################################################
 
 ###Manually add "No" column to specify the order of gene-pair based on weight that ascending sort
@@ -94,11 +113,10 @@ write.table(fgc, file = paste("/Users/saila/Desktop/Visualization_material/lean_
 
 
 ##Draw graph using "ggplot2" package in R
-install.packages("ggplot2")
 library(ggplot2)
 
 ##Read file to draw network
-myGraph <- read.table("/Users/saila/Desktop/Visualization_material/lean_data/192/192_sig-non.txt", header = T)	##Set path
+myGraph <- read.table(filename, header = T)	##Set path
 ##To count the number of each group (frequency table)
 table(myGraph$Significant)
 
@@ -107,7 +125,7 @@ table(myGraph$Significant)
 ##Graph with title which name depend on the input
 #you may add pathname from NewPathwayAPI_withName.txt
 #######################################################
-=========================================================================================
+#=========================================================================================
 
 qplot(No, Weight, colour = Significant, data = myGraph, 
 	main=" Dissimilarity between gene pair of GCN of MAPK signaling pathway", xlab="Gene-pair", ylab="Weight")
