@@ -1,0 +1,8 @@
+"Gene1"	"Gene2"	"No"	"Weight"	"Significant"
+"Net_15"	"Net_15"	"1"	"0.999999999958926"	"Non-non"
+"COQ3"	"COQ7"	"2"	"0.999999999999978"	"Sig-non"
+"COQ3"	"COQ6"	"3"	"0.999999999999997"	"Non-non"
+"COQ3"	"COQ2"	"4"	"1"	"Sig-non"
+"COQ7"	"COQ6"	"5"	"1"	"Sig-non"
+"COQ7"	"COQ2"	"6"	"1"	"Sig-sig"
+"COQ6"	"COQ2"	"7"	"Net_15"	"Sig-non"

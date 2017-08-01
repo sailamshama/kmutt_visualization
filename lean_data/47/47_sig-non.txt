@@ -1,0 +1,8 @@
+"Gene1"	"Gene2"	"No"	"Weight"	"Significant"
+"Net_47"	"Net_47"	"1"	"0.994695225352962"	"Non-non"
+"GLUD1"	"GLUD2"	"2"	"0.999999999999944"	"Sig-non"
+"GLUD1"	"GLS2"	"3"	"0.999999999999998"	"Sig-non"
+"GLUD1"	"GLS"	"4"	"1"	"Sig-non"
+"GLUD2"	"GLS2"	"5"	"1"	"Sig-sig"
+"GLUD2"	"GLS"	"6"	"1"	"Sig-sig"
+"GLS2"	"GLS"	"7"	"Net_47"	"Sig-sig"

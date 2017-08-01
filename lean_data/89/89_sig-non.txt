@@ -1,0 +1,8 @@
+"Gene1"	"Gene2"	"No"	"Weight"	"Significant"
+"Net_89"	"Net_89"	"1"	"0.999999999996158"	"Non-non"
+"PSAT1"	"PNPO"	"2"	"1"	"Sig-non"
+"PSAT1"	"PDXK"	"3"	"1"	"Sig-non"
+"PSAT1"	"AOX1"	"4"	"1"	"Sig-non"
+"PNPO"	"PDXK"	"5"	"1"	"Sig-sig"
+"PNPO"	"AOX1"	"6"	"1"	"Sig-sig"
+"PDXK"	"AOX1"	"7"	"Net_89"	"Sig-sig"

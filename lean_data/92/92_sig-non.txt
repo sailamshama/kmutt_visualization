@@ -1,0 +1,8 @@
+"Gene1"	"Gene2"	"No"	"Weight"	"Significant"
+"Net_92"	"Net_92"	"1"	"0.99999999999898"	"Non-non"
+"HLCS"	"BTD"	"2"	"0.999999999999995"	"Sig-non"
+"HLCS"	"SPCS1"	"3"	"1"	"Sig-non"
+"HLCS"	"SPCS3"	"4"	"1"	"Sig-non"
+"BTD"	"SPCS1"	"5"	"1"	"Sig-sig"
+"BTD"	"SPCS3"	"6"	"1"	"Sig-sig"
+"SPCS1"	"SPCS3"	"7"	"Net_92"	"Sig-sig"

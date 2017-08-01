@@ -1,0 +1,8 @@
+"Gene1"	"Gene2"	"No"	"Weight"	"Significant"
+"Net_38"	"Net_38"	"1"	"0.999997973634523"	"Non-non"
+"PON1"	"PON2"	"2"	"0.999999999999909"	"Sig-non"
+"PON1"	"PON3"	"3"	"1"	"Non-non"
+"PON1"	"AKR1B10"	"4"	"1"	"Sig-non"
+"PON2"	"PON3"	"5"	"1"	"Sig-non"
+"PON2"	"AKR1B10"	"6"	"1"	"Sig-sig"
+"PON3"	"AKR1B10"	"7"	"Net_38"	"Sig-non"

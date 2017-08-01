@@ -1,0 +1,5 @@
+"Gene1"	"Gene2"	"No"	"Weight"	"Significant"
+"Net_291"	"Net_291"	"1"	"0.998311113587586"	"Non-non"
+"PTK2B"	"MAPK1"	"2"	"0.999999999999999"	"Sig-non"
+"PTK2B"	"MAP2K1"	"3"	"1"	"Non-non"
+"MAPK1"	"MAP2K1"	"4"	"Net_291"	"Sig-non"

@@ -1,0 +1,5 @@
+"Gene1"	"Gene2"	"No"	"Weight"	"Significant"
+"Net_31"	"Net_31"	"1"	"0.999963390835611"	"Non-non"
+"KARS"	"AASS"	"2"	"1"	"Sig-non"
+"KARS"	"AASDHPPT"	"3"	"1"	"Sig-non"
+"AASS"	"AASDHPPT"	"4"	"Net_31"	"Sig-sig"
