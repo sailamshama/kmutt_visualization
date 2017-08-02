@@ -3,31 +3,34 @@ library(ggplot2)
 names <- read.csv("/Users/saila/Desktop/Visualization_material/NewPathwayAPI_withName.txt", sep="\t")
 names = names[, 1:2]
   
-for (i in 3:10){
+for (i in 193:397){
   directory <- paste("/Users/saila/Desktop/Visualization_material/lean_data/",i , sep="")
   filename <- paste("/Users/saila/Desktop/Visualization_material/lean_data/",i,"/",i,"_sig-non.txt", sep="")
   if (file.exists(filename)){
     geneset_name = as.character(names[which(names[,1] == i), 2])
     myGraph <- read.table(filename, header = T)	##Set path
-    suppressWarnings(myGraph$Weight <- as.numeric(as.character(myGraph$Weight)))
+    #suppressWarnings(myGraph$Weight <- as.numeric(as.character(myGraph$Weight)))
+    myGraph$Weight <- as.numeric(levels(myGraph$Weight))[myGraph$Weight]
     
     png(paste(directory, "/profile",i,".png", sep=""))
-    ggplot(myGraph, aes(x=No, y=Weight))+
+    plot1 <- ggplot(myGraph, aes(x=No, y=Weight))+
       #scale_x_continuous(limits=c(0,600))
       geom_point(aes(colour = Significant), show.legend=TRUE)+
       xlab("gene-pair rank by weight")+
       ylab("weight")+
       ggtitle(paste(geneset_name, ": Weights",sep=""))+
       theme(plot.title = element_text(hjust = 0.5))
+    print(plot1) #important for saving while in loop
     dev.off()
                 
     png(paste(directory, "/sig_pairs",i,".png", sep="")) 
-    ggplot(myGraph, aes(x=Significant, y=Weight))+
+    plot2 <- ggplot(myGraph, aes(x=Significant, y=Weight))+
       geom_point(aes(colour=Significant), show.legend = TRUE)+
       xlab("")+
       ylab("weight")+
-      ggtitle(paste(geneset_name, ": Dissimilarity between gene-pair",sep=""))+
+      ggtitle(paste(geneset_name, ": Dissimilarity in gene-pair",sep=""))+
       theme(plot.title = element_text(hjust = 0.5))
+    print(plot2)
     dev.off()
   }
 }
