@@ -1,16 +1,22 @@
 library(ggplot2)
 
-drawList = 0
-filename <- paste("/Users/saila/Desktop/Visualization_material/lean_data/",drawList,"/",drawList,"_sig-non.txt", sep="")
+i  = 0
+directory <- paste("/Users/saila/Desktop/Visualization_material/lean_data/",i , sep="")
+setwd(directory)
+
+filename <- paste("/Users/saila/Desktop/Visualization_material/lean_data/",i,"/",i,"_sig-non.txt", sep="")
 myGraph <- read.table(filename, header = T)	##Set path
 myGraph$Weight <- as.numeric(as.character(myGraph$Weight))
 
-profile_graph <- ggplot(myGraph, aes(x=No, y=Weight))
-profile_graph+geom_point(aes(colour = Significant), show.legend=TRUE)
-              
-trio_graph <- ggplot(myGraph, aes(x=Significant, y=Weight))
-trio_graph+geom_point(aes(colour=Significant), show.legend = TRUE)
-
+png(paste(directory, "/profile",i,".png", sep=""))
+ggplot(myGraph, aes(x=No, y=Weight))+
+  geom_point(aes(colour = Significant), show.legend=TRUE)
+dev.off()
+            
+png(paste(directory, "/sig_pairs",i,".png", sep="")) 
+ggplot(myGraph, aes(x=Significant, y=Weight))+
+  trio_graph+geom_point(aes(colour=Significant), show.legend = TRUE)
+dev.off()
 
 #========================================================================
 #Noon's graphing
